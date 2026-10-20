@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Protótipo de inteligência territorial para apoiar a vigilância da dengue no Recife."
+    />
+    <title>VigiaSUS — Inteligência territorial em saúde</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="VigiaSUS, início">
+        <span class="brand-mark" aria-hidden="true">V</span>
+        <span>Vigia<span class="brand-light">SUS</span></span>
+      </a>
+      <div class="topbar-meta">
+        <span class="live-dot" aria-hidden="true"></span>
+        <span>PAINEL DE DEMONSTRAÇÃO</span>
+        <span class="topbar-divider" aria-hidden="true"></span>
+        <span>Recife, PE</span>
+      </div>
+      <button class="icon-button" id="about-button" type="button" aria-label="Sobre o projeto">i</button>
+    </header>
+
+    <main class="page">
+      <section class="intro">
+        <div>
+          <p class="eyebrow">SAÚDE PÚBLICA · VIGILÂNCIA TERRITORIAL</p>
+          <h1>Antecipar o risco.<br /><span>Proteger comunidades.</span></h1>
+          <p class="intro-copy">
+            Um protótipo de apoio à vigilância da dengue que combina sinais ambientais
+            e epidemiológicos para ajudar equipes a priorizar a atenção no território.
+          </p>
+        </div>
+        <div class="demo-badge">
+          <span class="badge-icon" aria-hidden="true">!</span>
+          <div>
+            <strong>Ambiente demonstrativo</strong>
+            <span>Dados fictícios. Não usar para decisões reais.</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="toolbar" aria-label="Filtros do painel">
+        <label class="select-label" for="period-select">
+          <span>PERÍODO DE ANÁLISE</span>
+          <select id="period-select">
+            <option value="14">Últimos 14 dias</option>
+            <option value="30">Últimos 30 dias</option>
+            <option value="7">Últimos 7 dias</option>
+          </select>
+        </label>
+        <span class="toolbar-note"><span class="calendar-icon" aria-hidden="true">◷</span> Cenário simulado · atualização demonstrativa</span>
+      </section>
+
+      <section class="metric-grid" aria-label="Indicadores demonstrativos">
+        <article class="metric-card">
+          <div class="metric-heading"><span>ÁREAS MONITORADAS</span><span class="metric-icon mint">⌖</span></div>
+          <div class="metric-value" id="area-count">—</div>
+          <div class="metric-foot">Bairros incluídos no cenário</div>
+        </article>
+        <article class="metric-card">
+          <div class="metric-heading"><span>EM ATENÇÃO</span><span class="metric-icon amber">↗</span></div>
+          <div class="metric-value" id="attention-count">—</div>
+          <div class="metric-foot">Risco estimado moderado ou alto</div>
+        </article>
+        <article class="metric-card">
+          <div class="metric-heading"><span>RISCO MÉDIO</span><span class="metric-icon blue">◉</span></div>
+          <div class="metric-value"><span id="average-risk">—</span><small>/ 100</small></div>
+          <div class="metric-foot">Índice explicável do protótipo</div>
+        </article>
+        <article class="metric-card">
+          <div class="metric-heading"><span>SINAL AMBIENTAL</span><span class="metric-icon violet">☂</span></div>
+          <div class="metric-value"><span id="rainfall-indicator">—</span><small> mm</small></div>
+          <div class="metric-foot">Chuva simulada no cenário</div>
+        </article>
+      </section>
+
+      <section class="workspace-grid">
+        <article class="panel territory-panel">
+          <div class="panel-header">
+            <div>
+              <p class="eyebrow">VISÃO TERRITORIAL</p>
+              <h2>Sinais por área</h2>
+            </div>
+            <span class="panel-tag">RECIFE · DEMO</span>
+          </div>
+          <p class="panel-description">Selecione uma área para consultar os fatores que compõem o índice.</p>
+          <div class="territory-grid" id="territory-grid" aria-label="Áreas demonstrativas, selecione para ver detalhes"></div>
+          <div class="legend" aria-label="Legenda de risco">
+            <span><i class="legend-dot low"></i> Baixo</span>
+            <span><i class="legend-dot medium"></i> Moderado</span>
+            <span><i class="legend-dot high"></i> Alto</span>
+          </div>
+          <p class="map-note">Visualização esquemática, sem correspondência a limites geográficos reais.</p>
+        </article>
+
+        <article class="panel detail-panel" aria-live="polite">
+          <div class="panel-header detail-heading">
+            <div>
+              <p class="eyebrow">ÁREA SELECIONADA</p>
+              <h2 id="selected-name">—</h2>
+            </div>
+            <span id="selected-status" class="risk-pill">—</span>
+          </div>
+          <div class="risk-summary">
+            <div class="risk-number"><span id="selected-risk">—</span><small>/100</small></div>
+            <div class="risk-copy">
+              <strong>Índice demonstrativo</strong>
+              <span>Não representa probabilidade clínica ou diagnóstico.</span>
+            </div>
+          </div>
+          <div class="factor-list">
+            <div class="factor-row">
+              <div class="factor-label"><span>Chuva recente</span><strong id="rain-value">—</strong></div>
+              <div class="factor-track"><span id="rain-bar" class="factor-fill rain-fill"></span></div>
+            </div>
+            <div class="factor-row">
+              <div class="factor-label"><span>Sinal de notificações</span><strong id="case-value">—</strong></div>
+              <div class="factor-track"><span id="case-bar" class="factor-fill case-fill"></span></div>
+            </div>
+            <div class="factor-row">
+              <div class="factor-label"><span>Condição ambiental</span><strong id="environment-value">—</strong></div>
+              <div class="factor-track"><span id="environment-bar" class="factor-fill environment-fill"></span></div>
+            </div>
+          </div>
+          <div class="explanation-box">
+            <span class="explanation-icon" aria-hidden="true">✳</span>
+            <p id="explanation">—</p>
+          </div>
+        </article>
+      </section>
+
+      <section class="bottom-grid">
+        <article class="panel simulator-panel">
+          <div class="panel-header">
+            <div>
+              <p class="eyebrow">ANÁLISE DE CENÁRIO</p>
+              <h2>Simule um sinal de chuva</h2>
+            </div>
+            <span class="sim-icon" aria-hidden="true">⌁</span>
+          </div>
+          <p class="panel-description">Explore como uma mudança ambiental altera o índice demonstrativo.</p>
+          <div class="slider-heading">
+            <label for="rain-slider">Chuva acumulada no cenário</label>
+            <output id="rain-output" for="rain-slider">48 mm</output>
+          </div>
+          <input id="rain-slider" type="range" min="0" max="120" value="48" />
+          <div class="range-labels"><span>0 mm</span><span>120 mm</span></div>
+          <button class="reset-button" id="reset-button" type="button">Restaurar cenário inicial <span aria-hidden="true">↺</span></button>
+        </article>
+
+        <article class="panel action-panel">
+          <p class="eyebrow">COMO INTERPRETAR</p>
+          <h2>Um sinal para orientar a atenção.</h2>
+          <p>
+            O índice combina indicadores simulados para apoiar a triagem territorial.
+            Ele não substitui investigação epidemiológica, confirmação laboratorial
+            nem orientação de profissionais de saúde.
+          </p>
+          <div class="action-footer"><span class="shield-icon" aria-hidden="true">+</span><span>Decisões reais exigem dados oficiais e validação por equipes de vigilância.</span></div>
+        </article>
+      </section>
+
+      <footer class="footer">
+        <span>VigiaSUS <span class="footer-dot">·</span> Protótipo acadêmico de IA explicável</span>
+        <span>Dados fictícios <span class="footer-dot">·</span> Não é ferramenta oficial de saúde pública</span>
+      </footer>
+    </main>
+
+    <dialog id="about-dialog" class="about-dialog">
+      <form method="dialog">
+        <button class="dialog-close" aria-label="Fechar">×</button>
+        <p class="eyebrow">SOBRE O PROJETO</p>
+        <h2>Inteligência artificial com transparência.</h2>
+        <p>O VigiaSUS é um protótipo educacional de apoio à vigilância territorial da dengue. Nesta versão, os números são inteiramente fictícios e o índice é uma regra demonstrativa ponderada — não um modelo treinado, previsão validada ou recomendação médica.</p>
+        <p>Uma versão de pesquisa precisaria de dados oficiais anonimizados, avaliação epidemiológica, análise de vieses, governança e validação com profissionais antes de qualquer uso operacional.</p>
+        <button class="dialog-done">Entendi</button>
+      </form>
+    </dialog>
+  </body>
+</html>
